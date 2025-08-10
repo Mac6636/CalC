@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smart Finance Calculators — Pro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <meta name="description" content="Advanced calculators: Buy vs Rent (with taxes & other charges), EMI, SIP, Lumpsum, Amortization with prepayment, REIT yield, Zero Net Interest finders, and break-even horizon." />
+</head>
+<body>
+<header class="site-header">
+  <h1>Smart Finance Calculators — Pro</h1>
+  <p class="tagline">India-focused, tax-aware, and built for decision-making.</p>
+</header>
+
+<nav class="tabs" aria-label="Calculator categories">
+  <button class="tab active" data-target="buyVsRent">Buy vs Rent</button>
+  <button class="tab" data-target="emi">EMI</button>
+  <button class="tab" data-target="sip">SIP</button>
+  <button class="tab" data-target="lumpsum">Lumpsum</button>
+  <button class="tab" data-target="amort">Amortization</button>
+  <button class="tab" data-target="reit">REIT Yield</button>
+  <button class="tab" data-target="zeroNetInterest">Zero Net Interest (Loan)</button>
+  <button class="tab" data-target="priceThreshold">Zero Net Interest (Price)</button>
+  <button class="tab" data-target="breakeven">Buy vs Rent Break-even</button>
+</nav>
+
+<main>
+  <!-- Buy vs Rent -->
+  <section id="buyVsRent" class="panel active">
+    <h2>Buy vs Rent (with Taxes & One-time Costs)</h2>
+    <form class="grid" id="form-bvr">
+      <div class="field"><label>Property price (₹)</label><input type="number" id="bvr_price" value="22000000" step="10000"></div>
+      <div class="field"><label>Down payment (₹)</label><input type="number" id="bvr_down" value="6000000" step="10000"></div>
+      <div class="field"><label>Loan interest (annual %)</label><input type="number" id="bvr_rate" value="7.5" step="0.01"></div>
+      <div class="field"><label>Loan tenure (years)</label><input type="number" id="bvr_years" value="20" min="1" max="40"></div>
+      <div class="field"><label>Monthly rent (₹)</label><input type="number" id="bvr_rent" value="40000" step="100"></div>
+      <div class="field"><label>Rent inflation (%/yr)</label><input type="number" id="bvr_rentInf" value="5" step="0.1"></div>
+      <div class="field"><label>Home price growth (%/yr)</label><input type="number" id="bvr_homeInf" value="5" step="0.1"></div>
+      <div class="field"><label>Maintenance & taxes (% of price / yr)</label><input type="number" id="bvr_maintPct" value="1.5" step="0.1"></div>
+      <div class="field"><label>Annual interest deduction cap (₹)</label><input type="number" id="bvr_taxCap" value="400000" step="1000"></div>
+      <div class="field"><label>Tax slab (% of eligible interest)</label><input type="number" id="bvr_taxSlab" value="30" min="0" max="45"></div>
+      <div class="field"><label>Horizon (years)</label><input type="number" id="bvr_horizon" value="10" min="1" max="40"></div>
+
+      <div class="divider"><span>One-time Costs (adjust as per your state)</span></div>
+      <div class="field"><label>Stamp duty (% of price)</label><input type="number" id="bvr_stamp" value="5" step="0.1"></div>
+      <div class="field"><label>Registration (% of price)</label><input type="number" id="bvr_reg" value="1" step="0.1"></div>
+      <div class="field"><label>GST/Other (%)</label><input type="number" id="bvr_gst" value="0" step="0.1"></div>
+
+      <div class="actions">
+        <button type="button" id="bvr_calc">Calculate</button>
+        <button type="reset" class="ghost">Reset</button>
+      </div>
+    </form>
+    <div class="results" id="bvr_results" hidden>
+      <div class="cards">
+        <div class="card"><h3>EMI</h3><p id="bvr_out_emi">–</p></div>
+        <div class="card"><h3>Total Interest (loan)</h3><p id="bvr_out_interest">–</p></div>
+        <div class="card"><h3>Tax Saved</h3><p id="bvr_out_taxSaved">–</p></div>
+        <div class="card"><h3>One-time Costs</h3><p id="bvr_out_onetime">–</p></div>
+        <div class="card"><h3>Net Buy Cost</h3><p id="bvr_out_net">–</p></div>
+      </div>
+      <p id="bvr_compare"></p>
+    </div>
+  </section>
+
+  <!-- EMI -->
+  <section id="emi" class="panel">
+    <h2>Loan EMI</h2>
+    <form class="grid" id="form-emi">
+      <div class="field"><label>Principal (₹)</label><input type="number" id="emi_p" value="16000000" step="10000"></div>
+      <div class="field"><label>Rate (annual %)</label><input type="number" id="emi_r" value="7.5" step="0.01"></div>
+      <div class="field"><label>Tenure (years)</label><input type="number" id="emi_y" value="20"></div>
+      <div class="actions"><button type="button" id="emi_calc">Calculate</button></div>
+    </form>
+    <div class="results" id="emi_results" hidden>
+      <div class="cards">
+        <div class="card"><h3>EMI</h3><p id="emi_out_mi">–</p></div>
+        <div class="card"><h3>Total Interest</h3><p id="emi_out_int">–</p></div>
+        <div class="card"><h3>Total Payment</h3><p id="emi_out_total">–</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIP -->
+  <section id="sip" class="panel">
+    <h2>SIP Returns</h2>
+    <form class="grid" id="form-sip">
+      <div class="field"><label>Monthly investment (₹)</label><input type="number" id="sip_m" value="20000" step="100"></div>
+      <div class="field"><label>Expected return (%/yr)</label><input type="number" id="sip_r" value="12" step="0.1"></div>
+      <div class="field"><label>Years</label><input type="number" id="sip_y" value="15"></div>
+      <div class="actions"><button type="button" id="sip_calc">Calculate</button></div>
+    </form>
+    <div class="results" id="sip_results" hidden>
+      <div class="cards">
+        <div class="card"><h3>Corpus</h3><p id="sip_out_corpus">–</p></div>
+        <div class="card"><h3>Total Invested</h3><p id="sip_out_invested">–</p></div>
+        <div class="card"><h3>Gains</h3><p id="sip_out_gains">–</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lumpsum -->
+  <section id="lumpsum" class="panel">
+    <h2>Lumpsum Growth</h2>
+    <form class="grid" id="form-ls">
+      <div class="field"><label>Amount (₹)</label><input type="number" id="ls_p" value="1000000"></div>
+      <div class="field"><label>Expected return (%/yr)</label><input type="number" id="ls_r" value="10" step="0.1"></div>
+      <div class="field"><label>Years</label><input type="number" id="ls_y" value="10"></div>
+      <div class="actions"><button type="button" id="ls_calc">Calculate</button></div>
+    </form>
+    <div class="results" id="ls_results" hidden>
+      <div class="cards">
+        <div class="card"><h3>Future Value</h3><p id="ls_out_fv">–</p></div>
+        <div class="card"><h3>Gain</h3><p id="ls_out_gain">–</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Amortization -->
+  <section id="amort" class="panel">
+    <h2>Loan Amortization (with Annual Prepayment)</h2>
+    <form class="grid" id="form-amort">
+      <div class="field"><label>Principal (₹)</label><input type="number" id="am_p" value="16000000" step="10000"></div>
+      <div class="field"><label>Rate (%/yr)</label><input type="number" id="am_r" value="7.5" step="0.01"></div>
+      <div class="field"><label>Years</label><input type="number" id="am_y" value="20"></div>
+      <div class="field"><label>Annual prepayment (₹)</label><input type="number" id="am_pp" value="0" step="10000"></div>
+      <div class="field"><label>Prepay month (1-12)</label><input type="number" id="am_ppm" value="12" min="1" max="12"></div>
+      <div class="actions"><button type="button" id="am_calc">Generate</button></div>
+    </form>
+    <div class="results" id="amort_results" hidden>
+      <div class="cards">
+        <div class="card"><h3>EMI</h3><p id="am_out_mi">–</p></div>
+        <div class="card"><h3>Total Interest</h3><p id="am_out_int">–</p></div>
+        <div class="card"><h3>Months to Close</h3><p id="am_out_months">–</p></div>
+      </div>
+      <div class="table-wrap"><table id="am_table" aria-label="Amortization schedule">
+        <thead><tr><th>Month</th><th>Interest</th><th>Principal</th><th>Balance</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- REIT -->
+  <section id="reit" class="panel">
+    <h2>REIT Yield</h2>
+    <form class="grid" id="form-reit">
+      <div class="field"><label>Current price (₹)</label><input type="number" id="reit_p" value="320" step="0.1"></div>
+      <div class="field"><label>Annual dividend (₹)</label><input type="number" id="reit_d" value="14.5" step="0.1"></div>
+      <div class="actions"><button type="button" id="reit_calc">Calculate</button></div>
+    </form>
+    <div class="results" id="reit_results" hidden>
+      <div class="cards"><div class="card"><h3>Yield</h3><p id="reit_out_yield">–</p></div></div>
+    </div>
+  </section>
+
+  <!-- Zero Net Interest (Loan) -->
+  <section id="zeroNetInterest" class="panel">
+    <h2>Zero Net Interest — Solve Loan Size</h2>
+    <p class="muted">Find the maximum loan where total interest paid ≤ tax savings over the horizon.</p>
+    <form class="grid">
+      <div class="field"><label>Rate (%/yr)</label><input type="number" id="zni_rate" value="7.5" step="0.01"></div>
+      <div class="field"><label>Tenure (years)</label><input type="number" id="zni_years" value="20"></div>
+      <div class="field"><label>Horizon for tax benefit (years)</label><input type="number" id="zni_horizon" value="10"></div>
+      <div class="field"><label>Annual interest deduction cap (₹)</label><input type="number" id="zni_taxCap" value="400000"></div>
+      <div class="field"><label>Tax slab (%)</label><input type="number" id="zni_slab" value="30"></div>
+      <div class="actions"><button type="button" id="zni_calc">Solve</button></div>
+    </form>
+    <div class="results" id="zni_results" hidden>
+      <div class="cards">
+        <div class="card"><h3>Max Loan (after-tax net ≤ 0)</h3><p id="zni_out_loan">–</p></div>
+        <div class="card"><h3>EMI @ solution</h3><p id="zni_out_emi">–</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Zero Net Interest (Price) -->
+  <section id="priceThreshold" class="panel">
+    <h2>Zero Net Interest — Solve Property Price</h2>
+    <p class="muted">Given your down payment, find price where net interest ≤ 0.</p>
+    <form class="grid">
+      <div class="field"><label>Down payment (₹)</label><input type="number" id="znp_down" value="6000000"></div>
+      <div class="field"><label>Rate (%/yr)</label><input type="number" id="znp_rate" value="7.5" step="0.01"></div>
+      <div class="field"><label>Tenure (years)</label><input type="number" id="znp_years" value="20"></div>
+      <div class="field"><label>Horizon for tax (years)</label><input type="number" id="znp_horizon" value="10"></div>
+      <div class="field"><label>Annual interest cap (₹)</label><input type="number" id="znp_taxCap" value="400000"></div>
+      <div class="field"><label>Tax slab (%)</label><input type="number" id="znp_slab" value="30"></div>
+      <div class="actions"><button type="button" id="znp_calc">Solve</button></div>
+    </form>
+    <div class="results" id="znp_results" hidden>
+      <div class="cards"><div class="card"><h3>Property Price</h3><p id="znp_out_price">–</p></div></div>
+    </div>
+  </section>
+
+  <!-- Break-even -->
+  <section id="breakeven" class="panel">
+    <h2>Buy vs Rent Break-even Horizon</h2>
+    <p class="muted">Find the smallest horizon (years) where Net Buy Cost ≤ Total Rent.</p>
+    <form class="grid">
+      <div class="field"><label>Property price (₹)</label><input type="number" id="be_price" value="22000000"></div>
+      <div class="field"><label>Down payment (₹)</label><input type="number" id="be_down" value="6000000"></div>
+      <div class="field"><label>Rate (%/yr)</label><input type="number" id="be_rate" value="7.5" step="0.01"></div>
+      <div class="field"><label>Tenure (years)</label><input type="number" id="be_years" value="20"></div>
+      <div class="field"><label>Monthly rent (₹)</label><input type="number" id="be_rent" value="40000"></div>
+      <div class="field"><label>Rent inflation (%/yr)</label><input type="number" id="be_rentInf" value="5" step="0.1"></div>
+      <div class="field"><label>Home price growth (%/yr)</label><input type="number" id="be_homeInf" value="5" step="0.1"></div>
+      <div class="field"><label>Maint & taxes (% price/yr)</label><input type="number" id="be_maint" value="1.5" step="0.1"></div>
+      <div class="field"><label>Interest cap (₹)</label><input type="number" id="be_cap" value="400000"></div>
+      <div class="field"><label>Tax slab (%)</label><input type="number" id="be_slab" value="30"></div>
+      <div class="field"><label>Max horizon to search (years)</label><input type="number" id="be_max" value="30"></div>
+      <div class="actions"><button type="button" id="be_calc">Find Break-even</button></div>
+    </form>
+    <div class="results" id="be_results" hidden>
+      <div class="cards">
+        <div class="card"><h3>Break-even Year</h3><p id="be_out_year">–</p></div>
+        <div class="card"><h3>EMI</h3><p id="be_out_emi">–</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year"></span> Smart Finance Calculators. Built with vanilla JS.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
