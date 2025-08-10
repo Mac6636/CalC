@@ -65,3 +65,22 @@ thead th{ position:sticky; top:0; background:#0e1117 }
   input { background:#fff; color:#fff (--text); border-color: var(--ring); }
   thead th { background:#fff; }
 }
+@media (prefers-color-scheme: light){
+  :root{
+    --bg:#f8fafc;
+    --text:#0b1220;
+    --card:#fff;
+    --muted:#475569;
+    --border:#e5e7eb;
+    --ring:#cbd5e1;
+  }
+  body{ background:#f6f7fb }
+  .tab, button{ background: linear-gradient(180deg,#fff,#f6f7fb) }
+  /* FIX: make inputs readable in light mode */
+  input{
+    background:#ffffff;
+    color: var(--text);
+    border-color: var(--ring);
+  }
+  thead th{ background:#ffffff }
+}
