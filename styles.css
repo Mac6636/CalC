@@ -65,3 +65,7 @@ thead th{ position:sticky; top:0; background:#0e1117 }
   body{ background:#f6f7fb }
   .tab, button{ background: linear-gradient(180deg,#fff,#f6f7fb) }
 }
+@media (prefers-color-scheme: light){
+  input { background:#fff; color: var(--text); border-color: var(--ring); }
+  thead th { background:#fff; }
+}
