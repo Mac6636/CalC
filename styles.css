@@ -62,6 +62,6 @@ thead th{ position:sticky; top:0; background:#0e1117 }
 
 }
 @media (prefers-color-scheme: light){
-  input { background:#fff; color: var(--text); border-color: var(--ring); }
+  input { background:#fff; color:#fff (--text); border-color: var(--ring); }
   thead th { background:#fff; }
 }
