@@ -60,11 +60,7 @@ thead th{ position:sticky; top:0; background:#0e1117 }
 
 .site-footer{ text-align:center; color:var(--muted); padding:28px 0 40px }
 
-}
-@media (prefers-color-scheme: light){
-  input { background:#fff; color:#fff (--text); border-color: var(--ring); }
-  thead th { background:#fff; }
-}
+/* Light mode overrides */
 @media (prefers-color-scheme: light){
   :root{
     --bg:#f8fafc;
